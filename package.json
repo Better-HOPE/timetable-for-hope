@@ -1,0 +1,10 @@
+{
+  "name": "hope-timetable",
+  "scripts": {
+    "build:firefox": "bash ./scripts/build.firefox.sh",
+    "build:chromium": "bash ./scripts/build.chromium.sh",
+    "clean": "bash ./scripts/clean.sh"
+  },
+  "author": "cathiecode",
+  "license": "CC0-1.0"
+}

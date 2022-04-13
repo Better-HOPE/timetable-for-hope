@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "HOPE 時間割拡張",
+  "version": "0.2",
+  "description": "hope.fun.ac.jpに時間割機能を追加します。",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://hope.fun.ac.jp/my/"
+      ],
+      "js": [
+        "index.js"
+      ],
+      "run_at": "document_end"
+    }
+  ]
+}
