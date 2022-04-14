@@ -1,4 +1,4 @@
-/* tinydom */
+/* t
 t = (name) => (attributes) => (children) => {
   const elm = document.createElement(name);
   if (attributes) {
@@ -35,46 +35,7 @@ t.text = (text) => document.createTextNode(text);
   console.log("document", document);
 
   document.body.appendChild(t.style()(`
-    .hopemod__container {
-      background-color: #fff;
-      border: 1px solid rgba(0,0,0,.125);
-      padding: 1rem;
-      margin-bottom: 20px;
-    }
-    .hopemod__CourseCard {
-      display: block;
-      margin: 0.5em;
-      padding: 0.5em;
-      border: solid 1px #999;
-      background-color: #fff;
-      color: #333;
-    }
-    .hopemod__TrashCan {
-      position: absolute;
-      display: inline-block;
-      top: 10px;
-      left: 10px;
-      background-color: #e33;
-      color: #fff;
-      padding: 10px;
-    }
 
-    .hopemod__TimeTable {
-      position: relative;
-      width: calc(100% - 1em);
-      margin: 0.5em;
-      table-layout: fixed;
-    }
-    .hopemod__TimeTable td {
-      border: solid 1px #999;
-      margin-bottom: 1rem;
-    }
-    .hopemod__TimeTable tbody tr th:before { /* NOTE: https://blog.w0s.jp/281 */
-      display: block;
-      float: left;
-      height: 5em;
-      content: "";
-    }
   `));
 
   const getSessionKey = async () => {
@@ -96,16 +57,16 @@ t.text = (text) => document.createTextNode(text);
 
   const fetchEnrolledCourse = async () => {
     const result = await fetch(`https://hope.fun.ac.jp/lib/ajax/service.php?sesskey=${await getSessionKey()}&info=core_course_get_enrolled_courses_by_timeline_classification`, {
-      "credentials": "include",
-      "headers": {
+      credentials: "include",
+      headers: {
         "Accept-Language": "ja",
         "Content-Type": "application/json",
         "Cache-Control": "max-age=0"
       },
-      "referrer": "https://hope.fun.ac.jp/my/",
-      "body": JSON.stringify([{ "index": 0, "methodname": "core_course_get_enrolled_courses_by_timeline_classification", "args": { "offset": 0, "limit": 0, "classification": "all", "sort": "fullname", "customfieldname": "", "customfieldvalue": "" } }]),
-      "method": "POST",
-      "mode": "cors"
+      referrer: "https://hope.fun.ac.jp/my/",
+      body: JSON.stringify([{ index: 0, methodname: "core_course_get_enrolled_courses_by_timeline_classification", args: { offset: 0, limit: 0, classification: "all", sort: "fullname", customfieldname: "", customfieldvalue: "" } }]),
+      method: "POST",
+      mode: "cors"
     });
     if (!result.ok) {
       return undefined;
@@ -211,7 +172,7 @@ t.text = (text) => document.createTextNode(text);
 
     window.hopemod__handleCourseDrop = (ev, dayIndex, unitIndex) => {
       ev.preventDefault();
-      const { courseId, dayIndex: origDayIndex, unitIndex: origUnitIndex } = JSON.parse(ev.dataTransfer.getData('application/json'));
+      const { courseId ,dayIndex: origDayIndex, unitIndex: origUnitIndex } = JSON.parse(ev.dataTransfer.getData('application/json'));
       if (origDayIndex === dayIndex && origUnitIndex === unitIndex) {
         return;
       }
@@ -336,3 +297,5 @@ t.text = (text) => document.createTextNode(text);
     render();
   }
 })();
+
+*/
