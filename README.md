@@ -6,7 +6,7 @@
 - 付属の科目一覧からコースをドラッグ&ドロップすることにより時間割を編集することができます
 
 ## インストール
-### ChromeとVivaldiのひと
+### Chromeの人
 1. [最新のリリース](https://github.com/cathiecode/hope-timetable/releases)のAssetsの中にある`hope-timetable-chrome-webstore.zip`をダウンロードします。
 2. zipダウンロードしたzipファイルを任意の場所に展開します。(注: 展開したファイルを移動するとインストールが解除されるため慎重に選んでください)
 3. Chrome の拡張機能の設定でデベロッパーモードを有効にします。
@@ -14,7 +14,10 @@
 5. 1でダウンロードし解凍したフォルダを選択します。
 6. 拡張機能の一覧に hope-timetable が表示されていれば完了です。
 
-### Firefoxのひと
+### Vivaldiの人
+- Chrome向けの説明と[Vivaldi公式の説明](https://help.vivaldi.com/ja/desktop-ja/miscellaneous-ja/extensions/#Vivaldi1)を参考にしてください。
+
+### Firefoxの人
 1. [最新のリリース](https://github.com/cathiecode/hope-timetable/releases)のAssetsの中にある`xpi`ファイルをクリックします。
 2. インストールが開始されます。
 
