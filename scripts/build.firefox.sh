@@ -1,10 +1,12 @@
 #!/bin/bash
 
+npm run build:core
+
 mkdir -p ./build/firefox
 
 cp ./src/manifest.firefox.json ./build/firefox/manifest.json
 
-cp ./src/index.js ./build/firefox
+cp ./build/core/* ./build/firefox
 
 cd build/firefox
 
