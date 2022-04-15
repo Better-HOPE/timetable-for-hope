@@ -65,7 +65,7 @@ export default function Table({ schedule, onChange }: TableProps) {
         return;
       }
       const target = event.currentTarget;
-      target.style.boxShadow = ""
+      target.style.boxShadow = "";
       const dayIndex =
         target.dataset.dayIndex !== undefined
           ? parseInt(target.dataset.dayIndex, 10)
@@ -91,34 +91,17 @@ export default function Table({ schedule, onChange }: TableProps) {
         return;
       }
 
-      if (origDayIndex !== undefined && origUnitIndex !== undefined) {
-        const remove = confirm(
-          `もとのコマ(${schedule[origDayIndex].header}曜${
-            origUnitIndex + 1
-          }限)を消しますか?(OK: 消す, キャンセル: 消さない)`
-        );
-        if (remove) {
-          moveClassSchedule(
-            course,
-            dayIndex,
-            unitIndex,
-            origDayIndex,
-            origUnitIndex
-          );
-          return;
-        }
-      }
       setClassSchedule(course, dayIndex, unitIndex);
     },
     [schedule, setClassSchedule, moveClassSchedule]
   );
 
   const handleDragEnter = useCallback((event: any) => {
-    event.currentTarget.style.boxShadow = "inset 0px 0px 0px 5px #ccf"
+    event.currentTarget.style.boxShadow = "inset 0px 0px 0px 5px #ccf";
   }, []);
 
   const handleDragLeave = useCallback((event: any) => {
-    event.currentTarget.style.boxShadow = ""
+    event.currentTarget.style.boxShadow = "";
   }, []);
 
   // placeholder
@@ -131,11 +114,7 @@ export default function Table({ schedule, onChange }: TableProps) {
       <thead>
         <th style={{ width: "2em" }} />
         {schedule.map((day, dayIndex) => (
-          <th
-            key={dayIndex}
-          >
-            {day.header}
-          </th>
+          <th key={dayIndex}>{day.header}</th>
         ))}
       </thead>
       <tbody>

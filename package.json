@@ -3,7 +3,7 @@
   "scripts": {
     "build:firefox": "bash ./scripts/build.firefox.sh",
     "build:chromium": "bash ./scripts/build.chromium.sh",
-    "build:core": "npx esbuild --bundle src/index.tsx --outfile=build/core/index.js",
+    "build:core": "npx esbuild --bundle src/index.tsx --outfile=build/core/index.js --minify",
     "lint": "eslint './src/**/*'",
     "fix": "npx prettier -w './src/**/*'",
     "clean": "bash ./scripts/clean.sh"
