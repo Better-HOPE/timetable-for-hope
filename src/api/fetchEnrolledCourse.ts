@@ -21,7 +21,9 @@ async function getSessionKey(): Promise<string> {
   return maySessionKey;
 }
 
-export default async function fetchEnrolledCourse(): Promise<Course[] | undefined> {
+export default async function fetchEnrolledCourse(): Promise<
+  Course[] | undefined
+> {
   const result = await fetch(
     `https://hope.fun.ac.jp/lib/ajax/service.php?sesskey=${await getSessionKey()}&info=core_course_get_enrolled_courses_by_timeline_classification`,
     {

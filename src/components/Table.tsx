@@ -106,7 +106,7 @@ export default function Table({ schedule, onChange }: TableProps) {
   );
 
   const handleDragEnter = useCallback((event: any) => {
-    event.currentTarget.style.boxShadow = "inset 0px 0px 0px 5px #ccf";
+    event.currentTarget.style.boxShadow = "inset 0px 0px 3px 3px #eee";
   }, []);
 
   const handleDragLeave = useCallback((event: any) => {
@@ -115,7 +115,7 @@ export default function Table({ schedule, onChange }: TableProps) {
 
   // placeholder
   if (!schedule) {
-    return <div style={{ height: "500px", backgroundColor: "#eef" }} />;
+    return <div style={{ height: "500px", backgroundColor: "#eee" }} />;
   }
 
   return (

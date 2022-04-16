@@ -35,7 +35,7 @@ export default async function migratorForV0_2(): Promise<void> {
     courseMap[course.id] = course;
   });
 
-  console.log("all materials prepared")
+  console.log("all materials prepared");
 
   const newSchedule = produce(schedule, (draft) => {
     Object.entries(oldConfig).forEach(([courseId, oldSchedule]) => {
@@ -44,18 +44,16 @@ export default async function migratorForV0_2(): Promise<void> {
         if (!course) {
           return;
         }
-        draft[e.dayIndex].schedule[e.unitIndex].list.push(
-          course
-        );
+        draft[e.dayIndex].schedule[e.unitIndex].list.push(course);
       });
     });
   });
 
-  console.log("convert done")
+  console.log("convert done");
 
   console.log(newSchedule);
 
-  setStorage<ScheduleStorage>("schedule", {schedule: newSchedule});
+  setStorage<ScheduleStorage>("schedule", { schedule: newSchedule });
 
   console.log("work saved");
 
