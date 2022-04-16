@@ -52,9 +52,7 @@ export default function Table({ schedule, onChange }: TableProps) {
     [onChange, schedule]
   );
 
-  //const todayDayIndex = new Date().getDay() - 1;
-
-  const todayDayIndex = 1;
+  const todayDayIndex = new Date().getDay() - 1;
 
   const handleDragOver = useCallback((event: any) => {
     event.preventDefault();
