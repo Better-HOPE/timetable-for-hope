@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useErrorBoundary,
+  useMemo,
   useState,
 } from "preact/hooks";
 import fetchEnrolledCourse from "./api/fetchEnrolledCourse";
@@ -20,6 +21,33 @@ export default function App() {
   const [schedule, setSchedule] = useState<Schedule | null>(null);
   const [course, setCourse] = useState<Course[] | null>(null);
   const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [showAllCourse, setShowAllCourse] = useState<boolean>(false);
+
+  const filteredCourseList = useMemo(() => {
+    if (!schedule) {
+      return null;
+    }
+
+    if (!course) {
+      return null;
+    }
+
+    if (showAllCourse) {
+      return course;
+    }
+
+    const registeredCourse = schedule
+      .map((day) => day.schedule.map((unit) => unit.list))
+      .flat(2);
+
+    const registeredCourseSet: { [id: string]: boolean } = {};
+
+    registeredCourse.forEach((course) => {
+      registeredCourseSet[course.id] = true;
+    });
+
+    return course.filter((course) => !registeredCourseSet[course.id]);
+  }, [course, schedule, showAllCourse]);
 
   const onMount = () => {
     (async () => {
@@ -87,6 +115,10 @@ export default function App() {
     event.currentTarget.style.boxShadow = "";
   }, []);
 
+  const handleToggleCourseListOption = useCallback((event: any) => {
+    setShowAllCourse((current) => !current);
+  }, []);
+
   useEffect(onMount, []);
 
   const [error, resetError] = useErrorBoundary();
@@ -113,14 +145,27 @@ export default function App() {
           onDragLeave={handleDragLeave}
         >
           <summary>講義一覧</summary>
-          {course ? null : <div>ロード中</div>}
-          <ul>
-            {course?.map((course) => (
-              <li>
-                <CourseCard key={course.id} course={course} />
-              </li>
-            ))}
-          </ul>
+          {!filteredCourseList ? (
+            <div>ロード中</div>
+          ) : (
+            <div>
+              <label>
+                <input
+                  type="checkbox"
+                  onChange={handleToggleCourseListOption}
+                  checked={showAllCourse}
+                />
+                すべてのコースを表示する
+              </label>
+              <ul>
+                {filteredCourseList?.map((course) => (
+                  <li key={course.id}>
+                    <CourseCard key={course.id} course={course} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </details>
         <Style />
       </DragStateContext.Provider>
