@@ -40,7 +40,7 @@ export default function Style() {
       table-layout: fixed;
     }
     .hopemod__TimeTable td {
-      border: solid 1px #999;
+      border: solid 1px #ddd;
       margin-bottom: 1rem;
     }
     .hopemod__TimeTable tbody tr th:before { /* NOTE: https://blog.w0s.jp/281 */

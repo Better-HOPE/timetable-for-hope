@@ -52,7 +52,9 @@ export default function Table({ schedule, onChange }: TableProps) {
     [onChange, schedule]
   );
 
-  const todayDayIndex = new Date().getDay() - 1;
+  //const todayDayIndex = new Date().getDay() - 1;
+
+  const todayDayIndex = 1;
 
   const handleDragOver = useCallback((event: any) => {
     event.preventDefault();
@@ -142,7 +144,7 @@ export default function Table({ schedule, onChange }: TableProps) {
                 data-day-index={dayIndex}
                 data-unit-index={unitIndex}
                 style={{
-                  backgroundColor: todayDayIndex === dayIndex ? "#ffcc99" : "",
+                  backgroundColor: todayDayIndex === dayIndex ? "#ffddaa" : "",
                 }}
               >
                 {day.schedule[unitIndex].list.map((course, i) => (
