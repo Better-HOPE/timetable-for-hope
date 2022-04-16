@@ -13,3 +13,5 @@ cd build/firefox
 zip -r -FS ../timetable-for-hope.xpi .
 
 cd -
+
+git archive HEAD --output=./build/source-for-amo.zip
