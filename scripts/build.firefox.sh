@@ -10,6 +10,6 @@ cp ./build/core/* ./build/firefox
 
 cd build/firefox
 
-zip -r -FS ../hope-timetable.xpi .
+zip -r -FS ../timetable-for-hope.xpi .
 
 cd -

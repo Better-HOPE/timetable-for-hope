@@ -8,8 +8,8 @@ cp ./src/manifest.chromium.json ./build/chromium/manifest.json
 
 cp ./build/core/* ./build/chromium
 
-cd build/chromium
+cd build/
 
-zip -r -FS ../hope-timetable-chrome-webstore.zip .
+zip -r -FS ./timetable-for-hope-chrome-webstore.zip chromium
 
 cd -

@@ -1,5 +1,5 @@
 {
-  "name": "hope-timetable",
+  "name": "timetable-for-hope",
   "scripts": {
     "build:firefox": "bash ./scripts/build.firefox.sh",
     "build:chromium": "bash ./scripts/build.chromium.sh",
