@@ -90,8 +90,17 @@ export default function Table({ schedule, onChange }: TableProps) {
       if (origDayIndex === dayIndex && origUnitIndex === unitIndex) {
         return;
       }
-
-      setClassSchedule(course, dayIndex, unitIndex);
+      if (origDayIndex === undefined || origUnitIndex === undefined) {
+        setClassSchedule(course, dayIndex, unitIndex);
+      } else {
+        moveClassSchedule(
+          course,
+          dayIndex,
+          unitIndex,
+          origDayIndex,
+          origUnitIndex
+        );
+      }
     },
     [schedule, setClassSchedule, moveClassSchedule]
   );
