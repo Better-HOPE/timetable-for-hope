@@ -23,6 +23,13 @@
 1. [最新のリリース](https://github.com/better-hope/timetable-for-hope/releases)の Assets の中にある`xpi`ファイルをクリックします。
 2. インストールが開始されます。
 
+## Advanced usage
+### 時間割の位置をカスタマイズする
+ダッシュボードのカスタムブロック機能を使うことにより、任意の場所に時間割を移動することができます。HTMLブロックを以下の内容で設定するとその中に時間割が表示されるようになります。
+```
+<div id="timetable-for-hope-placeholder"></div>
+```
+
 ## 謝辞
 
 - この拡張機能は[Better Waseda Moodle](https://github.com/mkihr-ojisan/better-waseda-moodle)より多大なインスパイアを受けて制作されました。
