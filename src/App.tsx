@@ -7,6 +7,7 @@ import {
   useMemo,
   useState,
 } from "preact/hooks";
+import useSWR from "swr";
 import fetchEnrolledCourse from "./api/fetchEnrolledCourse";
 import { getStorage, setStorage } from "./api/storage";
 import CourseCard from "./components/CourseCard";
@@ -18,8 +19,10 @@ import Schedule, { initialSchedule } from "./type/Schedule";
 import { ScheduleStorage } from "./type/storage";
 
 export default function App() {
-  const [schedule, setSchedule] = useState<Schedule | null>(null);
-  const [course, setCourse] = useState<Course[] | null>(null);
+  const {data: schedule, mutate: mutateSchedule} = useSWR("schedule", async (key) => (await getStorage<ScheduleStorage>(key))?.schedule ?? initialSchedule);
+  const {data: course} = useSWR("/lib/ajax/service.php?info=core_course_get_enrolled_courses_by_timeline_classification", async () => {
+    return await fetchEnrolledCourse();
+  });
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [showAllCourse, setShowAllCourse] = useState<boolean>(false);
 
@@ -49,18 +52,6 @@ export default function App() {
     return course.filter((course) => !registeredCourseSet[course.id]);
   }, [course, schedule, showAllCourse]);
 
-  const onMount = () => {
-    (async () => {
-      const maySchedule = await getStorage<ScheduleStorage>("schedule");
-      const schedule: Schedule = maySchedule?.schedule ?? initialSchedule;
-      setSchedule(schedule);
-
-      const course = await fetchEnrolledCourse();
-
-      setCourse(() => course ?? null);
-    })();
-  };
-
   const onDragStart = useCallback(() => {
     setIsDragging(true);
   }, []);
@@ -78,16 +69,16 @@ export default function App() {
           unitIndex
         ].list.filter((unit) => unit.id !== course.id);
       });
-      setSchedule(newState);
       setStorage<ScheduleStorage>("schedule", { schedule: newState });
+      mutateSchedule(newState);
     },
-    [schedule]
+    [mutateSchedule, schedule]
   );
 
-  const handleChange = useCallback((newSchedule: Schedule) => {
-    setSchedule(newSchedule);
-    setStorage<ScheduleStorage>("schedule", { schedule: newSchedule });
-  }, []);
+  const handleChange = useCallback(async (newSchedule: Schedule) => {
+    await setStorage<ScheduleStorage>("schedule", { schedule: newSchedule });
+    mutateSchedule(newSchedule);
+  }, [mutateSchedule]);
 
   const handleRemoveAreaDragOver = useCallback((event: any) => {
     event.preventDefault();
@@ -118,8 +109,6 @@ export default function App() {
   const handleToggleCourseListOption = useCallback((event: any) => {
     setShowAllCourse((current) => !current);
   }, []);
-
-  useEffect(onMount, []);
 
   const [error, resetError] = useErrorBoundary();
 
