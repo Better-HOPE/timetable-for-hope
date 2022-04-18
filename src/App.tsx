@@ -155,7 +155,7 @@ export default function App() {
                   onChange={handleToggleCourseListOption}
                   checked={showAllCourse}
                 />
-                すべてのコースを表示する
+                時間割に追加したコースを含める
               </label>
               <ul>
                 {filteredCourseList?.map((course) => (
