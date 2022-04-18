@@ -5,10 +5,10 @@ const preactResolvePlugin = {
 	name: 'preact-compat resolver',
 	setup(build) {
 		build.onResolve({ filter: /^react$/ }, () => {
-			return { path: resolve('./node_modules/@preact/compat/index.js') }
+			return { path: resolve('./node_modules/preact/compat/dist/compat.mjs') }
 		})
 		build.onResolve({ filter: /^react-dom$/ }, () => {
-			return { path: resolve('./node_modules/@preact/compat/index.js') }
+			return { path: resolve('./node_modules/preact/compat/dist/compat.mjs') }
 		})
 	}
 }
