@@ -47,13 +47,13 @@ export default function CourseCard({
       registerHandleDragStart();
       onDragStart && onDragStart();
     },
-    [course, dayIndex, onDragStart, unitIndex]
+    [course, dayIndex, onDragStart, registerHandleDragStart, unitIndex]
   );
 
   const handleDragEnd = useCallback(() => {
     registerHandleDragEnd();
     onDragEnd && onDragEnd();
-  }, [onDragEnd]);
+  }, [onDragEnd, registerHandleDragEnd]);
   return (
     <div
       className="hopemod__CourseCard"
