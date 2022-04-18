@@ -7,8 +7,10 @@ import migratorForV0_2 from "./migrator/migrator_0.2";
   await migratorForV0_2();
 
   let container;
-  
-  const customContainer = document.getElementById("timetable-for-hope-placeholder");
+
+  const customContainer = document.getElementById(
+    "timetable-for-hope-placeholder"
+  );
 
   if (customContainer) {
     container = customContainer;
@@ -21,6 +23,6 @@ import migratorForV0_2 from "./migrator/migrator_0.2";
     }
     regionMain.insertBefore(container, regionMain.firstChild);
   }
-    
+
   render(<App />, container);
 })();
