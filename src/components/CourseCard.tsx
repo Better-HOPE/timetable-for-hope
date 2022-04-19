@@ -1,8 +1,16 @@
+import produce from "immer";
 import { h } from "preact";
 import { useCallback, useContext } from "preact/hooks";
+import useSWR from "swr";
+import { getStorage, setStorage } from "../api/storage";
 import DragStateContext from "../contexts/DragStateContext";
+import useContextMenu from "../hooks/useContextMenu";
 import Course, { CourseMetaData } from "../type/course";
+import { initialSchedule } from "../type/Schedule";
+import { ScheduleStorage } from "../type/storage";
 import reduceCourse from "../utils/reduceCourse";
+import ContextMenu from "./ContextMenu";
+import ContextMenuItem from "./ContextMenuItem";
 
 type CourseCardProps = {
   course: Course;
@@ -23,6 +31,8 @@ export default function CourseCard({
     handleDragStart: registerHandleDragStart,
     handleDragEnd: registerHandleDragEnd,
   } = useContext(DragStateContext);
+
+  const {data: schedule, mutate: mutateSchedule} = useSWR("schedule", async (key) => (await getStorage<ScheduleStorage>(key))?.schedule ?? initialSchedule);
 
   const handleDragStart = useCallback(
     (ev: any) => {
@@ -54,14 +64,49 @@ export default function CourseCard({
     registerHandleDragEnd();
     onDragEnd && onDragEnd();
   }, [onDragEnd, registerHandleDragEnd]);
+
+  const handleOpenCourse = useCallback(() => {
+    document.location = course.viewurl;
+  }, [course.viewurl]);
+
+  const removeClassSchedule = useCallback(
+    (course: Course, dayIndex: number, unitIndex: number) => {
+      if (!schedule) {
+        return;
+      }
+      const newState = produce(schedule, (draft) => {
+        draft[dayIndex].schedule[unitIndex].list = draft[dayIndex].schedule[
+          unitIndex
+        ].list.filter((unit) => unit.id !== course.id);
+      });
+      setStorage<ScheduleStorage>("schedule", { schedule: newState });
+      mutateSchedule(newState);
+    },
+    [mutateSchedule, schedule]
+  );
+
+  const handleRemoveSchedule = useCallback(() => {
+    if (dayIndex === undefined || unitIndex === undefined) {
+      return
+    }
+    removeClassSchedule(course, dayIndex, unitIndex);
+  }, [course, dayIndex, removeClassSchedule, unitIndex]);
+
+  const {targetProps, contextMenuProps} = useContextMenu();
+
   return (
     <div
       className="hopemod__CourseCard"
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      {...targetProps}      
     >
       <a href={course.viewurl}>{course.fullname}</a>
+      <ContextMenu {...contextMenuProps}>
+        <ContextMenuItem onClick={handleOpenCourse}><i class="fa fa-external-link" /> このコースを開く</ContextMenuItem>
+        <ContextMenuItem onClick={handleRemoveSchedule}><i class="fa fa-trash" /> このコースを削除する</ContextMenuItem>
+      </ContextMenu>
     </div>
   );
 }

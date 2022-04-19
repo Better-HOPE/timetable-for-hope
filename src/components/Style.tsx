@@ -49,6 +49,30 @@ export default function Style() {
       height: 5em;
       content: "";
     }
+    .hopemod__ContextMenu {
+      position: fixed;
+      min-width: 10rem;
+      padding: 0.5rem 0;
+      background-color: #fff;
+      color: #333;
+      border: solid 0.1rem #eee;
+      border-radius: 0.3rem;
+      box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+    }
+    .hopemod__ContextMenuItem {
+      display: block;
+      width: 100%;
+      background-color: transparent;
+      padding: 0.5rem;
+      cursor: pointer;
+      border: none;
+      color: #333;
+      text-align: left;
+      transition: background-color linear 250ms;
+    }
+    .hopemod__ContextMenuItem:hover {
+      background-color: #ddd;
+    }
   `}</style>
   );
 }
