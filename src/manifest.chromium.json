@@ -10,11 +10,5 @@
       "run_at": "document_end"
     }
   ],
-  "permissions": ["storage"],
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "hope-timetable@cathiecode.miraidai.fun",
-      "strict_min_version": "42.0"
-    }
-  }
+  "permissions": ["storage"]
 }
