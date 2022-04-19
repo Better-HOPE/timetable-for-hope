@@ -10,6 +10,7 @@ import {
 import useSWR from "swr";
 import fetchEnrolledCourse from "./api/fetchEnrolledCourse";
 import { getStorage, setStorage } from "./api/storage";
+import Config from "./components/Config";
 import CourseCard from "./components/CourseCard";
 import Style from "./components/Style";
 import Table from "./components/Table";
@@ -123,6 +124,7 @@ export default function App() {
 
   return (
     <div className="hopemod__container">
+      <Config />
       <DragStateContext.Provider
         value={{ handleDragStart: onDragStart, handleDragEnd: onDragEnd }}
       >
