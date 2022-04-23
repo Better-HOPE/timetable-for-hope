@@ -9,23 +9,8 @@
 
 ## インストール
 
-### Chrome と Vivaldi のひと
+<a href="https://timetable-for-hope.netlify.app/">ウェブページ</a>を見てください。
 
-1. [最新のリリース](https://github.com/better-hope/timetable-for-hope/releases)の Assets の中にある`timetable-for-hope-chrome-webstore.zip`をダウンロードします。
-2. zip ダウンロードした zip ファイルを任意の場所に展開します。(注: 展開したファイルを移動するとインストールが解除されるため慎重に選んでください)
-3. Chrome の拡張機能の設定でデベロッパーモードを有効にします。
-4. 「パッケージ化されていない拡張機能を読み込む」をクリックします。
-5. 1 でダウンロードし解凍したフォルダを選択します。
-6. 拡張機能の一覧に timetable-for-hope が表示されていれば完了です。
-
-### Firefox のひと
-
-1. [最新のリリース](https://github.com/better-hope/timetable-for-hope/releases)の Assets の中にある`xpi`ファイルをクリックします。
-2. インストールが開始されます。
-
-## Advanced usage
-### 時間割の位置をカスタマイズする
-ダッシュボードのカスタムブロック機能を使うことにより、任意の場所に時間割を移動することができます。HTMLブロックを以下の内容で設定するとその中に時間割が表示されるようになります。
 ```
 <div id="timetable-for-hope-placeholder"></div>
 ```
