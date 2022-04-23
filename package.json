@@ -12,7 +12,7 @@
   },
   "author": "cathiecode",
   "license": "CC0-1.0",
-  "version": "1.1.1",
+  "version": "1.2",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
