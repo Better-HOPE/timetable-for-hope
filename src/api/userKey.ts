@@ -1,8 +1,7 @@
+import generateUserKey from "../utils/generateUserKey";
 import { getStorage, setStorage } from "./storage";
 
-const generatedUserKey = `tt4h_user_key_${Date.now().toString(36)}${Math.round(
-  Math.random() * 100000
-).toString(36)}`;
+const generatedUserKey = generateUserKey();
 
 export default async function getUserKey(): Promise<string> {
   const configuredStorageKey = await getStorage<string>("userKey");
