@@ -7,9 +7,11 @@ import {
   useMemo,
   useState,
 } from "preact/hooks";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
+import { getLastUpdate, read } from "./api/backup";
 import fetchEnrolledCourse from "./api/fetchEnrolledCourse";
 import { getStorage, setStorage } from "./api/storage";
+import getUserKey from "./api/userKey";
 import Config from "./components/Config";
 import CourseCard from "./components/CourseCard";
 import Style from "./components/Style";
@@ -20,10 +22,20 @@ import Schedule, { initialSchedule } from "./type/Schedule";
 import { ScheduleStorage } from "./type/storage";
 
 export default function App() {
-  const {data: schedule, mutate: mutateSchedule} = useSWR("schedule", async (key) => (await getStorage<ScheduleStorage>(key))?.schedule ?? initialSchedule);
-  const {data: course} = useSWR("/lib/ajax/service.php?info=core_course_get_enrolled_courses_by_timeline_classification", async () => {
-    return await fetchEnrolledCourse();
-  });
+  const { mutate } = useSWRConfig();
+  const { data: scheduleStorage, mutate: mutateSchedule } = useSWR(
+    "schedule",
+    async (key) => await getStorage<ScheduleStorage>(key)
+  );
+
+  const schedule = scheduleStorage?.schedule ?? initialSchedule;
+
+  const { data: course } = useSWR(
+    "/lib/ajax/service.php?info=core_course_get_enrolled_courses_by_timeline_classification",
+    async () => {
+      return await fetchEnrolledCourse();
+    }
+  );
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [showAllCourse, setShowAllCourse] = useState<boolean>(false);
 
@@ -70,16 +82,27 @@ export default function App() {
           unitIndex
         ].list.filter((unit) => unit.id !== course.id);
       });
-      setStorage<ScheduleStorage>("schedule", { schedule: newState });
-      mutateSchedule(newState);
+      const newScheduleStorage = {
+        schedule: newState,
+        lastUpdate: Date.now(),
+      };
+      setStorage<ScheduleStorage>("schedule", newScheduleStorage);
+      mutateSchedule(newScheduleStorage);
     },
     [mutateSchedule, schedule]
   );
 
-  const handleChange = useCallback(async (newSchedule: Schedule) => {
-    await setStorage<ScheduleStorage>("schedule", { schedule: newSchedule });
-    mutateSchedule(newSchedule);
-  }, [mutateSchedule]);
+  const handleChange = useCallback(
+    async (newSchedule: Schedule) => {
+      const newScheduleStorage = {
+        schedule: newSchedule,
+        lastUpdate: Date.now(),
+      };
+      await setStorage<ScheduleStorage>("schedule", newScheduleStorage);
+      mutateSchedule(newScheduleStorage);
+    },
+    [mutateSchedule]
+  );
 
   const handleRemoveAreaDragOver = useCallback((event: any) => {
     event.preventDefault();

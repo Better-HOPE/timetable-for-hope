@@ -32,7 +32,11 @@ export default function CourseCard({
     handleDragEnd: registerHandleDragEnd,
   } = useContext(DragStateContext);
 
-  const {data: schedule, mutate: mutateSchedule} = useSWR("schedule", async (key) => (await getStorage<ScheduleStorage>(key))?.schedule ?? initialSchedule);
+  const { data: schedule, mutate: mutateSchedule } = useSWR(
+    "schedule",
+    async (key) =>
+      (await getStorage<ScheduleStorage>(key))?.schedule ?? initialSchedule
+  );
 
   const handleDragStart = useCallback(
     (ev: any) => {
@@ -79,7 +83,10 @@ export default function CourseCard({
           unitIndex
         ].list.filter((unit) => unit.id !== course.id);
       });
-      setStorage<ScheduleStorage>("schedule", { schedule: newState });
+      setStorage<ScheduleStorage>("schedule", {
+        schedule: newState,
+        lastUpdate: Date.now(),
+      });
       mutateSchedule(newState);
     },
     [mutateSchedule, schedule]
@@ -87,12 +94,12 @@ export default function CourseCard({
 
   const handleRemoveSchedule = useCallback(() => {
     if (dayIndex === undefined || unitIndex === undefined) {
-      return
+      return;
     }
     removeClassSchedule(course, dayIndex, unitIndex);
   }, [course, dayIndex, removeClassSchedule, unitIndex]);
 
-  const {targetProps, contextMenuProps} = useContextMenu();
+  const { targetProps, contextMenuProps } = useContextMenu();
 
   return (
     <div
@@ -100,12 +107,16 @@ export default function CourseCard({
       draggable
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
-      {...targetProps}      
+      {...targetProps}
     >
       <a href={course.viewurl}>{course.fullname}</a>
       <ContextMenu {...contextMenuProps}>
-        <ContextMenuItem onClick={handleOpenCourse}><i class="fa fa-external-link" /> このコースを開く</ContextMenuItem>
-        <ContextMenuItem onClick={handleRemoveSchedule}><i class="fa fa-trash" /> このコースを削除する</ContextMenuItem>
+        <ContextMenuItem onClick={handleOpenCourse}>
+          <i class="fa fa-external-link" /> このコースを開く
+        </ContextMenuItem>
+        <ContextMenuItem onClick={handleRemoveSchedule}>
+          <i class="fa fa-trash" /> このコースを削除する
+        </ContextMenuItem>
       </ContextMenu>
     </div>
   );

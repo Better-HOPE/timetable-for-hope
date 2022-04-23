@@ -5,12 +5,19 @@
   "description": "hope.fun.ac.jpに時間割機能を追加します。",
   "content_scripts": [
     {
-      "matches": ["*://hope.fun.ac.jp/my/*"],
-      "js": ["index.js"],
+      "matches": [
+        "*://hope.fun.ac.jp/my/*"
+      ],
+      "js": [
+        "index.js"
+      ],
       "run_at": "document_end"
     }
   ],
-  "permissions": ["storage"],
+  "permissions": [
+    "storage",
+    "https://firestore.googleapis.com/"
+  ],
   "browser_specific_settings": {
     "gecko": {
       "id": "hope-timetable@cathiecode.miraidai.fun",

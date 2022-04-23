@@ -53,7 +53,10 @@ export default async function migratorForV0_2(): Promise<void> {
 
   console.log(newSchedule);
 
-  setStorage<ScheduleStorage>("schedule", { schedule: newSchedule });
+  setStorage<ScheduleStorage>("schedule", {
+    schedule: newSchedule,
+    lastUpdate: Date.now(),
+  });
 
   console.log("work saved");
 

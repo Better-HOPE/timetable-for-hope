@@ -1,5 +1,8 @@
 import * as esbuild from 'esbuild'
+import { readFileSync } from 'fs'
 import { resolve } from 'path'
+
+const packageJson = JSON.parse(readFileSync("package.json"));
 
 const preactResolvePlugin = {
 	name: 'preact-compat resolver',
@@ -29,6 +32,7 @@ await esbuild.build({
 	minify: true,
 	plugins: [preactResolvePlugin, browserExtensionPolyfillResolvePlugin],
 	define: {
-		TARGET: `"${process.env.TARGET}"`
+		TARGET: `"${process.env.TARGET}"`,
+		VERSION: `"${packageJson.version}"`
 	}
 });
