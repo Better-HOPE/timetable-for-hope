@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimeTable for HOPE</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+  <style>
+    .badge {
+      display: inline-block;
+      border-radius: 5px;
+      padding: 4px;
+      vertical-align: top;
+      font-size: 10px !important;
+      margin-left: 4px;
+      text-transform: uppercase;
+    }
+
+    .badge--yellow {
+      background-color: #ed0;
+      color: #333333;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>TimeTable for HOPE</h1>
+  <h2 id="installation">インストール方法</h2>
+
+  <h3 id="quick-install">クイックインストール<span class="badge badge--yellow">Beta</span></h3>
+  <ol>
+    <li><a href="https://hope.fun.ac.jp/my/">HOPEのダッシュボード</a>を開き、「このページをカスタマイズする」を選択します。</li>
+    <li>左のメニューの最下部にある「ブロックを追加する」を選択し、「HTML」をクリックします。</li>
+    <li>(新しいHTMLブロック)の右にある歯車マークをクリックし、「…を設定する」をクリックします。</li>
+    <li>「コンテンツ」の下向き矢印マーク（↓）をクリックし、「HTML」（&lt;/&gt;）をクリックします。</li>
+    <li>
+      <code>&lt;p dir= … /p&gt;</code>を削除し、以下のコードブロックをコピーして貼り付けします。
+      <pre><code id="builtin-install-code"></code></pre>
+      <button id="builtin-install-code-copy">コピー</button>
+      <span id="builtin-install-code-message"></span>
+    </li>
+    <li>「変更を保存する」をクリックします。</li>
+    <li>十字のマークをドラッグ＆ドロップして位置を調整することができます。</li>
+  </ol>
+  <p>これでインストールが完了しました。</p>
+
+  <h3>拡張機能としてインストール</h3>
+  <h4>Chrome / Chromium / Vivaldi</h4>
+  <ol>
+    <li><a
+        href="https://github.com/better-hope/timetable-for-hope/releases">最新のリリース</a>のAssetsの中にあるtimetable-for-hope-chrome-webstore.zipをダウンロードします。
+    </li>
+    <li>ダウンロードした zip ファイルを任意の場所に展開します。(注: 展開したファイルを移動するとインストールが解除されるため慎重に選んでください)</li>
+    <li>Chrome の拡張機能の設定でデベロッパーモードを有効にします。</li>
+    <li>「パッケージ化されていない拡張機能を読み込む」をクリックします。</li>
+    <li>1 でダウンロードし解凍したフォルダを選択します。</li>
+    <li>拡張機能の一覧に timetable-for-hope が表示されていれば完了です。</li>
+  </ol>
+  <p>これでインストールが完了しました。</p>
+  <h4>Firefox</h4>
+  <ol>
+    <li>最新のリリースの Assets の中にあるxpiファイルをクリックします。</li>
+    <li>インストールが開始されます。</li>
+  </ol>
+  <p>これでインストールが完了しました。</p>
+
+  <script src="builtin-install-code.js" async defer></script>
+</body>
+
+</html>

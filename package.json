@@ -5,6 +5,7 @@
     "build:chromium": "bash ./scripts/build.chromium.sh",
     "build:builtin": "bash ./scripts/build.builtin.sh",
     "build:core": "node ./scripts/build.core.mjs",
+    "build:www": "bash ./scripts/build.www.sh",
     "lint": "eslint './src/**/*'",
     "fix": "npx prettier -w './src/**/*'",
     "clean": "bash ./scripts/clean.sh"
