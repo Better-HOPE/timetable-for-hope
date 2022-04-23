@@ -3,6 +3,7 @@
   "scripts": {
     "build:firefox": "bash ./scripts/build.firefox.sh",
     "build:chromium": "bash ./scripts/build.chromium.sh",
+    "build:builtin": "bash ./scripts/build.builtin.sh",
     "build:core": "node ./scripts/build.core.mjs",
     "lint": "eslint './src/**/*'",
     "fix": "npx prettier -w './src/**/*'",

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-npm run build:core
+TARGET=firefox npm run build:core
 
 mkdir -p ./build/firefox
 
