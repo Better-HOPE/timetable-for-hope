@@ -32,11 +32,12 @@ export default function CourseCard({
     handleDragEnd: registerHandleDragEnd,
   } = useContext(DragStateContext);
 
-  const { data: schedule, mutate: mutateSchedule } = useSWR(
+  const { data: scheduleStorage, mutate: mutateSchedule } = useSWR(
     "schedule",
-    async (key) =>
-      (await getStorage<ScheduleStorage>(key))?.schedule ?? initialSchedule
+    async (key) => await getStorage<ScheduleStorage>(key)
   );
+
+  const schedule = scheduleStorage?.schedule ?? initialSchedule;
 
   const handleDragStart = useCallback(
     (ev: any) => {
@@ -83,11 +84,12 @@ export default function CourseCard({
           unitIndex
         ].list.filter((unit) => unit.id !== course.id);
       });
-      setStorage<ScheduleStorage>("schedule", {
+      const scheduleStorage = {
         schedule: newState,
         lastUpdate: Date.now(),
-      });
-      mutateSchedule(newState);
+      };
+      setStorage<ScheduleStorage>("schedule", scheduleStorage);
+      mutateSchedule(scheduleStorage);
     },
     [mutateSchedule, schedule]
   );
