@@ -36,6 +36,10 @@ export default function App() {
       return await fetchEnrolledCourse();
     }
   );
+  const { data: compactDisplay } = useSWR<boolean | null>(
+    "config_compact",
+    getStorage
+  );
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [showAllCourse, setShowAllCourse] = useState<boolean>(false);
 
@@ -151,7 +155,11 @@ export default function App() {
       <DragStateContext.Provider
         value={{ handleDragStart: onDragStart, handleDragEnd: onDragEnd }}
       >
-        <Table schedule={schedule ?? undefined} onChange={handleChange} />
+        <Table
+          schedule={schedule ?? undefined}
+          compact={compactDisplay ?? false}
+          onChange={handleChange}
+        />
         <details
           onDragOver={handleRemoveAreaDragOver}
           onDrop={handleRemoveAreaDrop}

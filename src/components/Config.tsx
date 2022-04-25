@@ -126,6 +126,11 @@ export default function Config() {
   return (
     <details style={{ textAlign: "right" }}>
       <summary>設定</summary>
+      <h2>表示</h2>
+      <ConfigCheckboxElement
+        id="config_compact"
+        label="コンパクト表示(モバイル向け)を使用する"
+      />
       <h2>移行とバックアップ</h2>
       <button style={{ marginBottom: "1em" }} onClick={handleExportConfig}>
         時間割をエクスポート

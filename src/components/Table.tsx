@@ -1,5 +1,5 @@
 import produce from "immer";
-import { h } from "preact";
+import { h, Fragment } from "preact";
 import { useCallback, useErrorBoundary } from "preact/hooks";
 import Course, { CourseMetaData } from "../type/course";
 import Schedule from "../type/Schedule";
@@ -7,10 +7,11 @@ import CourseCard from "./CourseCard";
 
 type TableProps = {
   schedule?: Schedule;
+  compact?: boolean;
   onChange: (_: Schedule) => void;
 };
 
-export default function Table({ schedule, onChange }: TableProps) {
+export default function Table({ schedule, compact, onChange }: TableProps) {
   const setClassSchedule = useCallback(
     (course: Course, dayIndex: number, unitIndex: number) => {
       if (!schedule) {
@@ -118,6 +119,55 @@ export default function Table({ schedule, onChange }: TableProps) {
     return <div style={{ height: "500px", backgroundColor: "#eee" }} />;
   }
 
+  if (compact) {
+    const todaySchedule = schedule[todayDayIndex];
+
+    return (
+      <div>
+        {todaySchedule && (
+          <>
+            <h2>今日の講義</h2>
+            <table>
+              <tbody>
+                {todaySchedule?.schedule.filter(unit => unit.list.length !==0).map((unit, unitIndex) => (
+                  <tr key={unitIndex}>
+                    <th>{unitIndex + 1}</th>
+                    {unit.list.map((course, i) => (
+                      <td key={i}>
+                        <CourseCard course={course} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
+        <details>
+          <summary>他の曜日の講義を表示</summary>
+          {schedule.map((day, i) => (
+            <div key={i}>
+              <h2>{day.header}</h2>
+              <table>
+              <tbody>
+                {day.schedule.filter(unit => unit.list.length !==0).map((unit, unitIndex) => (
+                  <tr key={unitIndex}>
+                    <th>{unitIndex + 1}</th>
+                    {unit.list.map((course, i) => (
+                      <td key={i}>
+                        <CourseCard course={course} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            </div>
+          ))}
+        </details>
+      </div>
+    );
+  }
   return (
     <table className="hopemod__TimeTable">
       <thead>
