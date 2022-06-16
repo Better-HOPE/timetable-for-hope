@@ -2,16 +2,13 @@ import produce from "immer";
 import { h } from "preact";
 import {
   useCallback,
-  useEffect,
   useErrorBoundary,
   useMemo,
   useState,
 } from "preact/hooks";
-import useSWR, { useSWRConfig } from "swr";
-import { getLastUpdate, read } from "./api/backup";
+import useSWR from "swr";
 import fetchEnrolledCourse from "./api/fetchEnrolledCourse";
 import { getStorage, setStorage } from "./api/storage";
-import getUserKey from "./api/userKey";
 import Config from "./components/Config";
 import CourseCard from "./components/CourseCard";
 import Style from "./components/Style";
@@ -22,7 +19,6 @@ import Schedule, { initialSchedule } from "./type/Schedule";
 import { ScheduleStorage } from "./type/storage";
 
 export default function App() {
-  const { mutate } = useSWRConfig();
   const { data: scheduleStorage, mutate: mutateSchedule } = useSWR(
     "schedule",
     async (key) => await getStorage<ScheduleStorage>(key)
@@ -134,7 +130,7 @@ export default function App() {
     event.currentTarget.style.boxShadow = "";
   }, []);
 
-  const handleToggleCourseListOption = useCallback((event: any) => {
+  const handleToggleCourseListOption = useCallback(() => {
     setShowAllCourse((current) => !current);
   }, []);
 

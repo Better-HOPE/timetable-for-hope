@@ -1,6 +1,6 @@
 import produce from "immer";
 import { h, Fragment } from "preact";
-import { useCallback, useErrorBoundary } from "preact/hooks";
+import { useCallback } from "preact/hooks";
 import Course, { CourseMetaData } from "../type/course";
 import Schedule from "../type/Schedule";
 import CourseCard from "./CourseCard";
