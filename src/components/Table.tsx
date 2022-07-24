@@ -1,8 +1,10 @@
 import produce from "immer";
-import { h, Fragment } from "preact";
-import { useCallback } from "preact/hooks";
+import { h } from "preact";
+import { useCallback, useRef } from "preact/hooks";
+import useContextMenu from "../hooks/useContextMenu";
 import Course, { CourseMetaData } from "../type/course";
 import Schedule from "../type/Schedule";
+import ContextMenu from "./ContextMenu";
 import CourseCard from "./CourseCard";
 
 type TableProps = {
@@ -114,6 +116,46 @@ export default function Table({ schedule, compact, onChange }: TableProps) {
     event.currentTarget.style.boxShadow = "";
   }, []);
 
+  const cellContextMenu = useContextMenu();
+
+  const contextMenuCell = useRef<HTMLTableCellElement>();
+
+  const handleCustomCourseSubmit = useCallback(
+    (event: any) => {
+      event.preventDefault();
+      if (!contextMenuCell.current || !schedule) {
+        alert("対象が指定されませんでした");
+        return;
+      }
+      const dayIndexString = contextMenuCell.current.dataset.dayIndex;
+      const unitIndexString = contextMenuCell.current.dataset.unitIndex;
+
+      if (dayIndexString === undefined || unitIndexString === undefined) {
+        alert("対象が指定されませんでした(test)");
+        return null;
+      }
+
+      const dayIndex = parseInt(dayIndexString, 10);
+      const unitIndex = parseInt(unitIndexString, 10);
+
+      const course: Course = {
+        id: Date.now(),
+        fullname: event.currentTarget.elements["title"].value ?? "",
+        viewurl: event.currentTarget.elements["url"].value ?? "",
+      };
+
+      const newState = produce(schedule, (draft) => {
+        draft[dayIndex].schedule[unitIndex].list = draft[dayIndex].schedule[
+          unitIndex
+        ].list.filter((unit) => unit.id !== course.id);
+        draft[dayIndex].schedule[unitIndex].list.push(course);
+      });
+      onChange && onChange(newState);
+      cellContextMenu.close();
+    },
+    [onChange, schedule, cellContextMenu]
+  );
+
   // placeholder
   if (!schedule) {
     return <div style={{ height: "500px", backgroundColor: "#eee" }} />;
@@ -169,45 +211,84 @@ export default function Table({ schedule, compact, onChange }: TableProps) {
     );
   }
   return (
-    <table className="hopemod__TimeTable">
-      <thead>
-        <th style={{ width: "2em" }} />
-        {schedule.map((day, dayIndex) => (
-          <th key={dayIndex}>{day.header}</th>
-        ))}
-      </thead>
-      <tbody>
-        {schedule[0].schedule.map((_, unitIndex) => (
-          <tr key={unitIndex}>
-            <th>
-              <div>{unitIndex + 1}</div>
-            </th>
-            {schedule.map((day, dayIndex) => (
-              <td
-                key={dayIndex}
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                onDragEnter={handleDragEnter}
-                onDragLeave={handleDragLeave}
-                data-day-index={dayIndex}
-                data-unit-index={unitIndex}
-                style={{
-                  backgroundColor: todayDayIndex === dayIndex ? "#ffddaa" : "",
-                }}
-              >
-                {day.schedule[unitIndex].list.map((course, i) => (
-                  <CourseCard
-                    key={i}
-                    course={course}
-                    dayIndex={dayIndex}
-                    unitIndex={unitIndex}
+    <div>
+      <table className="hopemod__TimeTable">
+        <thead>
+          <th style={{ width: "2em" }} />
+          {schedule.map((day, dayIndex) => (
+            <th key={dayIndex}>{day.header}</th>
+          ))}
+        </thead>
+        <tbody>
+          {schedule[0].schedule.map((_, unitIndex) => (
+            <tr key={unitIndex}>
+              <th>
+                <div>{unitIndex + 1}</div>
+              </th>
+              {schedule.map((day, dayIndex) => (
+                <td
+                  key={dayIndex}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  onDragEnter={handleDragEnter}
+                  onDragLeave={handleDragLeave}
+                  data-day-index={dayIndex}
+                  data-unit-index={unitIndex}
+                  style={{
+                    backgroundColor:
+                      todayDayIndex === dayIndex ? "#ffddaa" : "",
+                  }}
+                  onContextMenu={(ev) => {
+                    contextMenuCell.current = ev.currentTarget;
+                    cellContextMenu.targetProps.onContextMenu(ev);
+                  }}
+                >
+                  {day.schedule[unitIndex].list.map((course, i) => (
+                    <CourseCard
+                      key={i}
+                      course={course}
+                      dayIndex={dayIndex}
+                      unitIndex={unitIndex}
+                    />
+                  ))}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <ContextMenu {...cellContextMenu.contextMenuProps}>
+        <form onSubmit={handleCustomCourseSubmit}>
+          <div>カスタムカードを追加</div>
+          <table>
+            <tbody>
+              <tr>
+                <th>タイトル</th>
+                <td>
+                  <input
+                    name="title"
+                    type="text"
+                    placeholder="コース名…"
+                    required
                   />
-                ))}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+                </td>
+              </tr>
+              <tr>
+                <th>URL</th>
+                <td>
+                  <input
+                    name="url"
+                    type="text"
+                    placeholder="https://…"
+                    required
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button>追加</button>
+        </form>
+      </ContextMenu>
+    </div>
   );
 }

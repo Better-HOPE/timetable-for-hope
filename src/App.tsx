@@ -137,6 +137,7 @@ export default function App() {
   const [error, resetError] = useErrorBoundary();
 
   if (error) {
+    console.error(error);
     return (
       <div>
         エラーが発生しました。
