@@ -1,5 +1,5 @@
 import produce from "immer";
-import { h } from "preact";
+import { h, Fragment } from "preact";
 import { useCallback, useRef } from "preact/hooks";
 import useContextMenu from "../hooks/useContextMenu";
 import Course, { CourseMetaData } from "../type/course";
