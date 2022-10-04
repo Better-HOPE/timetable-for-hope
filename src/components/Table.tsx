@@ -171,7 +171,7 @@ export default function Table({ schedule, compact, onChange }: TableProps) {
             <h2>今日の講義</h2>
             <table>
               <tbody>
-                {todaySchedule?.schedule.filter(unit => unit.list.length !==0).map((unit, unitIndex) => (
+                {todaySchedule?.schedule.map((unit, unitIndex) => unit.list.length === 0 ? null : (
                   <tr key={unitIndex}>
                     <th>{unitIndex + 1}</th>
                     {unit.list.map((course, i) => (
