@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "TimeTable for HOPE",
-  "version": "1.3.1",
+  "version": "1.3.2",
   "description": "hope.fun.ac.jpに時間割機能を追加します。",
   "content_scripts": [
     {
