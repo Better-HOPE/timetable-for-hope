@@ -4,6 +4,7 @@ import useSWR, { useSWRConfig } from "swr";
 import { read, write } from "../api/backup";
 import { getStorage, setStorage } from "../api/storage";
 import getUserKey from "../api/userKey";
+import { initialSchedule } from "../type/Schedule";
 import { ScheduleStorage } from "../type/storage";
 
 const ConfigCheckboxElement = ({
@@ -123,6 +124,18 @@ export default function Config() {
     [mutate]
   );
 
+  const resetClassesSchedule = useCallback(
+    () => {
+      const newScheduleStorage = {
+        schedule: initialSchedule,
+        lastUpdate: Date.now(),
+      };
+      setStorage<ScheduleStorage>("schedule", newScheduleStorage);
+      mutate("schedule");
+    },
+    [mutate]
+  );
+
   return (
     <details style={{ textAlign: "right" }}>
       <summary>設定</summary>
@@ -167,6 +180,9 @@ export default function Config() {
         </form>
         <div>使用中のユーザーキー: {userKey}</div>
       </details>
+      <hr />
+      <h2>リセット</h2> 
+      <button onClick={resetClassesSchedule}>時間割をリセットする</button>
       <hr />
       {message && (
         <>
