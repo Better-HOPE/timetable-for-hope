@@ -176,7 +176,7 @@ export default function App() {
               </label>
               <ul>
                 {displayCourseList?.map((course) => (
-                  <details>
+                  <details key={course.categoryName}>
                     <summary>{course.categoryName}</summary>
                     {course.courses.map((course) => (
                       <li key={course.id}>
