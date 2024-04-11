@@ -1,11 +1,6 @@
 import produce from "immer";
 import { h } from "preact";
-import {
-  useCallback,
-  useErrorBoundary,
-  useMemo,
-  useState,
-} from "preact/hooks";
+import { useCallback, useErrorBoundary, useMemo, useState } from "preact/hooks";
 import useSWR from "swr";
 import fetchEnrolledCourse from "./api/fetchEnrolledCourse";
 import { getStorage, setStorage } from "./api/storage";
@@ -17,6 +12,7 @@ import DragStateContext from "./contexts/DragStateContext";
 import Course, { CourseMetaData } from "./type/course";
 import Schedule, { initialSchedule } from "./type/Schedule";
 import { ScheduleStorage } from "./type/storage";
+import groupCourse from "./utils/groupCourse";
 
 export default function App() {
   const { data: scheduleStorage, mutate: mutateSchedule } = useSWR(
@@ -39,7 +35,7 @@ export default function App() {
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [showAllCourse, setShowAllCourse] = useState<boolean>(false);
 
-  const filteredCourseList = useMemo(() => {
+  const displayCourseList = useMemo(() => {
     if (!schedule) {
       return null;
     }
@@ -49,7 +45,7 @@ export default function App() {
     }
 
     if (showAllCourse) {
-      return course;
+      return groupCourse(course);
     }
 
     const registeredCourse = schedule
@@ -62,7 +58,9 @@ export default function App() {
       registeredCourseSet[course.id] = true;
     });
 
-    return course.filter((course) => !registeredCourseSet[course.id]);
+    return groupCourse(
+      course.filter((course) => !registeredCourseSet[course.id])
+    );
   }, [course, schedule, showAllCourse]);
 
   const onDragStart = useCallback(() => {
@@ -164,7 +162,7 @@ export default function App() {
           onDragLeave={handleDragLeave}
         >
           <summary>講義一覧</summary>
-          {!filteredCourseList ? (
+          {!displayCourseList ? (
             <div>ロード中</div>
           ) : (
             <div>
@@ -177,10 +175,15 @@ export default function App() {
                 時間割に追加したコースを含める
               </label>
               <ul>
-                {filteredCourseList?.map((course) => (
-                  <li key={course.id}>
-                    <CourseCard key={course.id} course={course} />
-                  </li>
+                {displayCourseList?.map((course) => (
+                  <details>
+                    <summary>{course.categoryName}</summary>
+                    {course.courses.map((course) => (
+                      <li key={course.id}>
+                        <CourseCard key={course.id} course={course} />
+                      </li>
+                    ))}
+                  </details>
                 ))}
               </ul>
             </div>
