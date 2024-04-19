@@ -21,9 +21,14 @@ async function getSessionKey(): Promise<string> {
   return maySessionKey;
 }
 
-export default async function fetchEnrolledCourse(): Promise<
+export default async function fetchEnrolledCourse(offset: number = 0, depth: number = 0): Promise<
   Course[] | undefined
 > {
+  // NOTE: limitが100でdepthが0~4だからだいたい400件までとれるはず
+  if (depth > 5) {
+    throw new Error("Fetching enrolled course depth max limit exceeds!");
+  }
+
   const result = await fetch(
     `https://hope.fun.ac.jp/lib/ajax/service.php?sesskey=${await getSessionKey()}&info=core_course_get_enrolled_courses_by_timeline_classification`,
     {
@@ -40,8 +45,8 @@ export default async function fetchEnrolledCourse(): Promise<
           methodname:
             "core_course_get_enrolled_courses_by_timeline_classification",
           args: {
-            offset: 0,
-            limit: 0,
+            offset: offset,
+            limit: 100,
             classification: "all",
             sort: "fullname",
             customfieldname: "",
@@ -57,8 +62,18 @@ export default async function fetchEnrolledCourse(): Promise<
     return undefined;
   }
   const json = await result.json();
-  if (json?.[0]?.error) {
+  if (json[0].error) {
     return undefined;
   }
-  return json?.[0]?.data?.courses;
+
+  // OPTIMIZE: JSには末尾再帰最適化はないはずだけど最適化してもいいかも
+  if (json[0].data.courses.length !== 0) {
+    const next = await fetchEnrolledCourse(json[0].data.nextoffset, depth + 1);
+
+    if (next) {
+      return [...json[0].data.courses, ...next];
+    }
+  }
+
+  return json[0].data.courses;
 }
