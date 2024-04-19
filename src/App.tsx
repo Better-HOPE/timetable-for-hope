@@ -26,6 +26,9 @@ export default function App() {
     "/lib/ajax/service.php?info=core_course_get_enrolled_courses_by_timeline_classification",
     async () => {
       return await fetchEnrolledCourse();
+    }, {
+      errorRetryCount: 1,
+      revalidateOnFocus: false
     }
   );
   const { data: compactDisplay } = useSWR<boolean | null>(
