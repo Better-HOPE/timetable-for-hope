@@ -39,6 +39,11 @@ export default function CourseCard({
 
   const schedule = scheduleStorage?.schedule ?? initialSchedule;
 
+  const { data: openInSameTab } = useSWR<boolean | null>(
+    "open_in_same_tab",
+    getStorage
+  );
+
   const handleDragStart = useCallback(
     (ev: any) => {
       const timeTable =
@@ -111,7 +116,13 @@ export default function CourseCard({
       onDragEnd={handleDragEnd}
       {...targetProps}
     >
-      <a href={course.viewurl}>{course.fullname}</a>
+      <a
+        href={course.viewurl}
+        target={openInSameTab ? "" : "_blank"}
+        rel={openInSameTab ? "noopenner" : ""}
+      >
+        {course.fullname}
+      </a>
       <ContextMenu {...contextMenuProps}>
         <ContextMenuItem onClick={handleOpenCourse}>
           <i class="fa fa-external-link" /> このコースを開く

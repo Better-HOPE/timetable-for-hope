@@ -10,9 +10,11 @@ import { ScheduleStorage } from "../type/storage";
 const ConfigCheckboxElement = ({
   id,
   label,
+  reversed,
 }: {
   id: string;
   label: string;
+  reversed?: boolean;
 }) => {
   const { data: value, mutate } = useSWR<boolean | null>(id, (id) =>
     getStorage(id)
@@ -20,10 +22,13 @@ const ConfigCheckboxElement = ({
 
   const handleChange = useCallback(
     (ev: any) => {
-      setStorage(id, ev.currentTarget.checked);
-      mutate(ev.currentTarget.checked);
+      const changedValue = reversed
+        ? !ev.currentTarget.checked
+        : ev.currentTarget.checked;
+      setStorage(id, changedValue);
+      mutate(changedValue);
     },
-    [id, mutate]
+    [id, reversed, mutate]
   );
 
   return (
@@ -31,7 +36,7 @@ const ConfigCheckboxElement = ({
       <label>
         <input
           type="checkbox"
-          checked={value ?? false}
+          checked={reversed ? !(value ?? false) : value ?? false}
           onChange={handleChange}
         />
         {label}
@@ -140,6 +145,11 @@ export default function Config() {
       <ConfigCheckboxElement
         id="config_compact"
         label="コンパクト表示(モバイル向け)を使用する"
+      />
+      <ConfigCheckboxElement
+        id="open_in_same_tab"
+        label="コースを別のタブで開く"
+        reversed
       />
       <h2>移行とバックアップ</h2>
       <button style={{ marginBottom: "1em" }} onClick={handleExportConfig}>
