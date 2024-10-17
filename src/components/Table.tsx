@@ -171,16 +171,18 @@ export default function Table({ schedule, compact, onChange }: TableProps) {
             <h2>今日の講義</h2>
             <table>
               <tbody>
-                {todaySchedule?.schedule.map((unit, unitIndex) => unit.list.length === 0 ? null : (
-                  <tr key={unitIndex}>
-                    <th>{unitIndex + 1}</th>
-                    {unit.list.map((course, i) => (
-                      <td key={i}>
-                        <CourseCard course={course} />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
+                {todaySchedule?.schedule.map((unit, unitIndex) =>
+                  unit.list.length === 0 ? null : (
+                    <tr key={unitIndex}>
+                      <th>{unitIndex + 1}</th>
+                      {unit.list.map((course, i) => (
+                        <td key={i}>
+                          <CourseCard course={course} />
+                        </td>
+                      ))}
+                    </tr>
+                  )
+                )}
               </tbody>
             </table>
           </>
@@ -191,19 +193,21 @@ export default function Table({ schedule, compact, onChange }: TableProps) {
             <div key={i}>
               <h2>{day.header}</h2>
               <table>
-              <tbody>
-                {day.schedule.map((unit, unitIndex) => unit.list.length === 0 ? null : (
-                  <tr key={unitIndex}>
-                    <th>{unitIndex + 1}</th>
-                    {unit.list.map((course, i) => (
-                      <td key={i}>
-                        <CourseCard course={course} />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                <tbody>
+                  {day.schedule.map((unit, unitIndex) =>
+                    unit.list.length === 0 ? null : (
+                      <tr key={unitIndex}>
+                        <th>{unitIndex + 1}</th>
+                        {unit.list.map((course, i) => (
+                          <td key={i}>
+                            <CourseCard course={course} />
+                          </td>
+                        ))}
+                      </tr>
+                    )
+                  )}
+                </tbody>
+              </table>
             </div>
           ))}
         </details>

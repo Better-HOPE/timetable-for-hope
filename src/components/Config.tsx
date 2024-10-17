@@ -124,17 +124,14 @@ export default function Config() {
     [mutate]
   );
 
-  const resetClassesSchedule = useCallback(
-    () => {
-      const newScheduleStorage = {
-        schedule: initialSchedule,
-        lastUpdate: Date.now(),
-      };
-      setStorage<ScheduleStorage>("schedule", newScheduleStorage);
-      mutate("schedule");
-    },
-    [mutate]
-  );
+  const resetClassesSchedule = useCallback(() => {
+    const newScheduleStorage = {
+      schedule: initialSchedule,
+      lastUpdate: Date.now(),
+    };
+    setStorage<ScheduleStorage>("schedule", newScheduleStorage);
+    mutate("schedule");
+  }, [mutate]);
 
   return (
     <details style={{ textAlign: "right" }}>
@@ -181,7 +178,7 @@ export default function Config() {
         <div>使用中のユーザーキー: {userKey}</div>
       </details>
       <hr />
-      <h2>リセット</h2> 
+      <h2>リセット</h2>
       <button onClick={resetClassesSchedule}>時間割をリセットする</button>
       <hr />
       {message && (
