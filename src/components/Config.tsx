@@ -114,21 +114,6 @@ export default function Config() {
 
   const { data: userKey } = useSWR<string>("userKey", () => getUserKey());
 
-  const handleUserKeySubmit = useCallback(
-    async (ev: any) => {
-      ev.preventDefault();
-      const newUserKey = ev.target.elements.user_key.value;
-
-      try {
-        await setStorage<string>("userKey", newUserKey);
-        mutate("userKey");
-      } catch (e) {
-        setMessage("ユーザーキーの設定に失敗しました");
-      }
-    },
-    [mutate]
-  );
-
   const resetClassesSchedule = useCallback(() => {
     const newScheduleStorage = {
       schedule: initialSchedule,
@@ -172,21 +157,7 @@ export default function Config() {
       <button onClick={handleDownload}>
         時間割データをダウンロードして上書き
       </button>
-      <details>
-        <summary>ユーザーキーの設定を開く</summary>
-        <form action="GET" onSubmit={handleUserKeySubmit}>
-          <label>
-            ユーザーキー(通常変更する必要はありません):
-            <input
-              name="user_key"
-              value={userKey}
-              placeholder="デフォルトのユーザーキーを使用…"
-            />
-            <button>保存</button>
-          </label>
-        </form>
-        <div>使用中のユーザーキー: {userKey}</div>
-      </details>
+      <div>使用中のユーザーキー: {userKey}</div>
       <hr />
       <h2>リセット</h2>
       <button onClick={resetClassesSchedule}>時間割をリセットする</button>
