@@ -14,14 +14,17 @@ import { ScheduleStorage } from "./type/storage";
     setStorage("storageRemains", true);
 
     try {
-      const restoredSchedule = await read<ScheduleStorage>("schedule", await getUserKey());
+      const restoredSchedule = await read<ScheduleStorage>(
+        "schedule",
+        await getUserKey()
+      );
 
       if (!restoredSchedule) {
         throw new Error("時間割が保存されていませんでした");
       }
 
       await setStorage<ScheduleStorage>("schedule", restoredSchedule);
-    } catch(e) {
+    } catch (e) {
       console.log("時間割の自動リストアに失敗しました", e);
     }
   }
