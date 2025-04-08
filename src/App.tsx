@@ -13,6 +13,7 @@ import Course, { CourseMetaData } from "./type/course";
 import Schedule, { initialSchedule } from "./type/Schedule";
 import { ScheduleStorage } from "./type/storage";
 import groupCourse from "./utils/groupCourse";
+import { updateSchedule } from "./api/updateSchedule";
 
 export default function App() {
   const { data: scheduleStorage, mutate: mutateSchedule } = useSWR(
@@ -88,8 +89,7 @@ export default function App() {
         schedule: newState,
         lastUpdate: Date.now(),
       };
-      setStorage<ScheduleStorage>("schedule", newScheduleStorage);
-      mutateSchedule(newScheduleStorage);
+      updateSchedule(newScheduleStorage);
     },
     [mutateSchedule, schedule]
   );
@@ -100,8 +100,7 @@ export default function App() {
         schedule: newSchedule,
         lastUpdate: Date.now(),
       };
-      await setStorage<ScheduleStorage>("schedule", newScheduleStorage);
-      mutateSchedule(newScheduleStorage);
+      await updateSchedule(newScheduleStorage);
     },
     [mutateSchedule]
   );

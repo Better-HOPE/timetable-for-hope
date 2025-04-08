@@ -11,6 +11,7 @@ import { ScheduleStorage } from "../type/storage";
 import reduceCourse from "../utils/reduceCourse";
 import ContextMenu from "./ContextMenu";
 import ContextMenuItem from "./ContextMenuItem";
+import { updateSchedule } from "../api/updateSchedule";
 
 type CourseCardProps = {
   course: Course;
@@ -93,8 +94,7 @@ export default function CourseCard({
         schedule: newState,
         lastUpdate: Date.now(),
       };
-      setStorage<ScheduleStorage>("schedule", scheduleStorage);
-      mutateSchedule(scheduleStorage);
+      updateSchedule(scheduleStorage);
     },
     [mutateSchedule, schedule]
   );

@@ -6,6 +6,7 @@ import { getStorage, setStorage } from "../api/storage";
 import getUserKey from "../api/userKey";
 import { initialSchedule } from "../type/Schedule";
 import { ScheduleStorage } from "../type/storage";
+import { updateSchedule } from "../api/updateSchedule";
 
 const ConfigCheckboxElement = ({
   id,
@@ -68,7 +69,7 @@ export default function Config() {
           throw "テキストボックスにエクスポート結果を貼り付けしてください";
         }
         const schedule = JSON.parse(paste);
-        await setStorage<ScheduleStorage>("schedule", schedule);
+        await updateSchedule(schedule);
         setMessage("時間割をインポートしました");
         mutate("schedule");
       } catch (e) {
@@ -101,9 +102,8 @@ export default function Config() {
         await getUserKey()
       );
       if (result) {
-        await setStorage<ScheduleStorage>("schedule", result);
+        await updateSchedule(result);
         setMessage("時間割をダウンロードしました");
-        mutate("schedule");
       } else {
         throw "時間割のダウンロードに失敗しました。アップロードしましたか？";
       }
@@ -119,8 +119,7 @@ export default function Config() {
       schedule: initialSchedule,
       lastUpdate: Date.now(),
     };
-    setStorage<ScheduleStorage>("schedule", newScheduleStorage);
-    mutate("schedule");
+    updateSchedule(newScheduleStorage);
   }, [mutate]);
 
   return (
