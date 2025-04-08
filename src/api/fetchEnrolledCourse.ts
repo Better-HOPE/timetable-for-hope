@@ -22,8 +22,8 @@ async function getSessionKey(): Promise<string> {
 }
 
 export default async function fetchEnrolledCourse(
-  offset: number = 0,
-  depth: number = 0
+  offset = 0,
+  depth = 0
 ): Promise<Course[] | undefined> {
   // NOTE: limitが100でdepthが0~4だからだいたい400件までとれるはず
   if (depth > 5) {
